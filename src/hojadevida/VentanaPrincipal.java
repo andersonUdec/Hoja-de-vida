@@ -5,14 +5,12 @@
  */
 package hojadevida;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 
 /**
  *
@@ -20,11 +18,13 @@ import javax.swing.JPanel;
  */
 public class VentanaPrincipal extends JFrame implements ActionListener{
     private Panel1 panel1;
+    private PanelLogo Plogo;
     private JMenuBar JMmenuBar;
     private JMenu JMArchivo, JMVer;
     private JMenuItem JMICrear, JMIAyuda, JMISalir, JMITabla;
     private DialogoVistaTabla dialogTabla;
-    
+    private VentanaPrincipal ventana;
+    private byte solo=0;
     private static final String CREAR = "CREAR";
     
     private static final String AYUDA = "AYUDA";
@@ -40,6 +40,10 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(null);
+        
+        Plogo = new PanelLogo(ventana);
+        Plogo.setBounds(200, 150, 400, 221);
+        add(Plogo);
                
         JMmenuBar = new JMenuBar();        
         setJMenuBar(JMmenuBar);
@@ -65,29 +69,44 @@ public class VentanaPrincipal extends JFrame implements ActionListener{
         
         JMITabla = new JMenuItem("Tabla");
         JMITabla.addActionListener(this);
-        setVisible(true);
+        
         
         JMVer = new JMenu("Ver");
         JMVer.add(JMITabla);
         JMmenuBar.add(JMVer);
         
         dialogTabla = new DialogoVistaTabla(this);
-        
+        setVisible(true);
+        repaint();
     }    
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == JMICrear) {
+        try{
+            if(e.getSource() == JMICrear) {
+                repaint();
+                panel1 = new Panel1(this);
+                panel1.setBounds(10, 10, 760, 540);
+                add(panel1);
+                remove(Plogo);
+            }
+            else if(e.getSource()== JMITabla){
+                panel1.LecturaFichero();
+                dialogTabla.actualizarTablaPersona();
+                dialogTabla.setVisible(true);
+
+            }
+            else if(e.getSource()==JMISalir) {
+                System.exit(0);
+            }
+        }
+        catch(NullPointerException ex){
             panel1 = new Panel1(this);
             panel1.setBounds(10, 10, 760, 540);
             add(panel1);
-        }
-        else if(e.getSource()== JMITabla){        
+            panel1.LecturaFichero();
             dialogTabla.actualizarTablaPersona();
             dialogTabla.setVisible(true);
-        }
-        else if(e.getSource()==JMISalir) {
-            System.exit(0);
         }
     }
 

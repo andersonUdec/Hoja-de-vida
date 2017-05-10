@@ -25,7 +25,7 @@ public class DialogoVistaTabla extends JDialog {
     private VentanaPrincipal ventana;
     public DialogoVistaTabla(VentanaPrincipal ventana) {
         this.ventana = ventana;
-        setSize(400, 300);
+        setSize(570, 300);
         setTitle("Vista Tabla");
         
         panel = new JPanel();
@@ -37,21 +37,21 @@ public class DialogoVistaTabla extends JDialog {
         dtm = new DefaultTableModel();
         tablaPersona = new JTable(dtm);
         
-        Object[] columna = {"Cedula", "Correo", "Nombre", "Fecha Nacimiento", "profesion", "genero"};
+        Object[] columna = {"Cedula", "Correo", "Nombre", "Apellido", "Fecha Nacimiento", "profesion", "genero"};
         for (Object columna1 : columna) {
             dtm.addColumn(columna1);
         }        
         
         
         JScrollPane scrollPane = new JScrollPane(tablaPersona);
-        scrollPane.setBounds(30, 30, 440, 200);
+        scrollPane.setBounds(30, 30, 500, 200);
         panel.add(scrollPane);
     }
     
     public void actualizarTablaPersona() {
          List<Persona> lista = this.ventana.getPanel1().getListaPersona();
          for (Persona persona : lista) {
-             Object[] fila = {persona.getCedula(), persona.getCorreo(), persona.getNombre(), persona.getFechaNac(), persona.getProfesion(), persona.getGenero()};
+             Object[] fila = {persona.getCedula(), persona.getCorreo(), persona.getNombre(), persona.getApellido(), persona.getFechaNac(), persona.getProfesion(), persona.getGenero()};
              dtm.addRow(fila);
         }
     }
